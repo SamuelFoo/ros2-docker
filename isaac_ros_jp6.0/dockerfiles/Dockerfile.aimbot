@@ -1,0 +1,24 @@
+ARG BASE_IMAGE
+FROM $BASE_IMAGE
+
+# Additional dependencies for the ROS2 packages px4_msgs and px4_msg_converter
+RUN --mount=type=cache,target=/var/cache/apt \
+  apt-get update -y || true && \
+  apt-get install -y \
+  ccache
+
+# Copy scripts
+ARG PROJECT_NAME=aimbot
+# Folder for scripts
+ARG SCRIPTS_DIR=/usr/local/bin/scripts/
+RUN mkdir -p $SCRIPTS_DIR
+# Script to install ROS dependencies
+COPY scripts/rosdep-all.sh $SCRIPTS_DIR
+# Entrypoint scripts
+COPY scripts/{PROJECT_NAME}/docker-dev-entrypoint.sh $SCRIPTS_DIR
+COPY scripts/{PROJECT_NAME}/docker-main-entrypoint.sh $SCRIPTS_DIR
+# Bash read command
+COPY scripts/{PROJECT_NAME}/.bashrc $SCRIPTS_DIR
+# Bash aliases
+COPY scripts/{PROJECT_NAME}/.bash_aliases $SCRIPTS_DIR
+RUN chmod +x $SCRIPTS_DIR/*.sh

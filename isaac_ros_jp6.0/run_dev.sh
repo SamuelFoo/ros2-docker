@@ -285,13 +285,11 @@ docker run -it --rm \
     --network host \
     ${DOCKER_ARGS[@]} \
     -v $ISAAC_ROS_DEV_DIR:/workspaces/isaac_ros-dev \
-    -v $HOME/workspaces/drone:/workspaces/drone \
-    -v $HOME/workspaces/zed:/workspaces/zed \
     -v /etc/localtime:/etc/localtime:ro \
     --name "$CONTAINER_NAME" \
     --runtime nvidia \
     --user="admin" \
-    --entrypoint /usr/local/bin/scripts/drone-docker-dev-entrypoint.sh \
+    --entrypoint /usr/local/bin/scripts/aimbot/docker-dev-entrypoint.sh \
     --workdir /workspaces \
     $BASE_NAME \
     /bin/bash
